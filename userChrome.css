@@ -3,9 +3,11 @@
 .tabbrowser-tab .tab-close-button {
   visibility: collapse !important;
 }
+/* Requires editing Firefox UI Fix (Lepton) below */
 
 
 /* From https://github.com/black7375/Firefox-UI-Fix master */
+/* Edited to remove tab close buttons */
 
 @namespace xul "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
 @namespace html "http://www.w3.org/1999/xhtml";
@@ -3576,21 +3578,8 @@ tab[visuallyselected] > stack::after {
   opacity: 0;
 }
 #tabbrowser-tabs[closebuttons="activetab"] .tabbrowser-tab:hover .tab-close-button {
-  visibility: visible !important;
-  opacity: 1;
-}
-
-/* Animate */
-@media (prefers-reduced-motion: no-preference) {
-  /* Fade out */
-  #tabbrowser-tabs[closebuttons="activetab"] .tabbrowser-tab:not([visuallyselected]) .tab-close-button {
-    transition: opacity 0.1s var(--animation-easing-function) !important;
-  }
-
-  /* Fade in */
-  #tabbrowser-tabs[closebuttons="activetab"] .tabbrowser-tab:hover .tab-close-button {
-    transition: opacity 0.25s var(--animation-easing-function) !important;
-  }
+  visibility: collapse !important;
+  opacity: 0;
 }
 
 /* Closed Button's icon thicker */
