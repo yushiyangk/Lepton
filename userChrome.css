@@ -1,3 +1,12 @@
+/*** Hide Tab Close buttons ***/
+/* From https://support.mozilla.org/en-US/questions/1288218 */
+.tabbrowser-tab .tab-close-button {
+  visibility: collapse !important;
+}
+
+
+/* From https://github.com/black7375/Firefox-UI-Fix master */
+
 @namespace xul "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
 @namespace html "http://www.w3.org/1999/xhtml";
 

@@ -1,3 +1,5 @@
+/* From https://github.com/black7375/Firefox-UI-Fix master */
+
 // ** Theme Related Options ****************************************************
 // userchrome.css usercontent.css activate
 user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
