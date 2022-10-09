@@ -67,7 +67,7 @@ mac_command_line_developer_tools() {
 
 check_git() {
   if ! [ -x "$(command -v git)" ]; then
-    if [ "${OSTYPE}" == "linux-gnu" ] || [ "${OSTYPE}" == "FreeBSD" ]; then
+    if [[ "${OSTYPE}" == "linux"* || "${OSTYPE}" == "FreeBSD" ]]; then
       pacapt_install
       sudo pacapt -S git
       pacapt_uninstall
@@ -185,8 +185,8 @@ write_file() {
 get_ini_section() {
   local filePath="$1"
 
-  local ouput=$(grep -E "^\[" "${filePath}" |sed -e "s/^\[//g" -e "s/\]$//g")
-  echo "${ouput}"
+  local output=$(grep -E "^\[" "${filePath}" |sed -e "s/^\[//g" -e "s/\]$//g")
+  echo "${output}"
 }
 get_ini_value() {
   local filePath="$1"
@@ -338,6 +338,7 @@ firefoxProfileDirPaths=(
   "${HOME}/.mozilla/firefox"
   "${HOME}/.waterfox"
   "${HOME}/.librewolf"
+  "${HOME}/.ghostery browser"
   "${HOME}/.pulse-browser"
   "${HOME}/.firedragon"
   "${HOME}/.local/opt/tor-browser/app/Browser/TorBrowser/Data/Browser"
@@ -346,6 +347,7 @@ firefoxProfileDirPaths=(
   "${HOME}/Library/Application Support/Firefox"
   "${HOME}/Library/Application Support/Waterfox"
   "${HOME}/Library/Application Support/libreWolf"
+  "${HOME}/Library/Application Support/Ghostery Browser"
   "${HOME}/Library/Application Support/pulse-browser"
   "${HOME}/Library/Application Support/TorBrowser/Browser"
 )
@@ -616,6 +618,137 @@ check_install_types() {
   fi
 }
 
+#== Custom Install =============================================================
+customFiles=(
+  user-overrides.js
+  userChrome-overrides.css
+  userContent-overrides.css
+)
+localCustomFiles=("${customFiles[@]}")
+
+customFileExist=""
+check_custom_files() {
+  paths_filter localCustomFiles
+
+  if [ "${#localCustomFiles[@]}" -gt 0 ]; then
+    customFileExist="true"
+    lepton_ok_message "Check custom file detected"
+
+    for customFile in "${localCustomFiles[@]}"; do
+      echo "- ${customFile}"
+    done
+  fi
+}
+
+copy_custom_files() {
+  if [ "${customFileExist}" == "true" ]; then
+    # If Release or Network mode, Local is passed (Already copied)
+    if [ "${leptonInstallType}" != "Local" ]; then
+      for profilePath in "${firefoxProfilePaths[@]}"; do
+        for customFile in "${localCustomFiles[@]}"; do
+          if [ "${customFile}" == "user-overrides.js" ]; then
+            autocp "${customFile}" "${profilePath}/${customFile}"
+          else
+            autocp "${customFile}" "${profilePath}/chrome/${customFile}"
+          fi
+        done
+      done
+    fi
+
+    lepton_ok_message "End custom file copy"
+  fi
+}
+
+customMethod=""
+customReset=""
+customAppend=""
+set_custom_method() {
+  local menuAppend="Append - Maintain changes in existing files and apply custom"
+  local menuOverwrite="Overwrite - After initializing the change, apply only custom"
+  local menuNone="None - Maintain changes in existing files"
+  local menuReset="Reset- Reset to pure lepton theme without custom"
+
+  echo "Select custom method"
+  select applyMethod in "${menuAppend}" "${menuOverwrite}" "${menuNone}" "${menuReset}"; do
+    case "${applyMethod}" in
+      "${menuAppend}")
+        customMethod="Append"
+        customAppend="true"
+        break;;
+      "${menuOverwrite}")
+        customMethod="Overwrite"
+        customReset="true"
+        customAppend="true"
+        break;;
+      "${menuNone}")
+        customMethod="None"
+        break;;
+      "${menuReset}")
+        customMethod="Reset"
+        customReset="true"
+        break;;
+      *)
+        echo "Invalid option, reselect please.";;
+     esac
+  done
+
+  lepton_ok_message "Selected ${customMethod}"
+}
+
+customFileApplied=""
+apply_custom_file() {
+  local profilePath=$1
+  local targetPath=$2
+  local customPath=$3
+  local otherCustomPath=$4
+
+  local leptonDir="${profilePath}/chrome"
+  local gitDir="${leptonDir}/.git"
+  if [ -f "${customPath}" ]; then
+    customPathApplied="true"
+
+    if [ -z "${customMethod}" ]; then
+      set_custom_method
+    fi
+
+    if [ "${customReset}" == "true" ]; then
+      if [[ "${targetPath}"  == *"user.js" ]]; then
+        \cp -f "${leptonDir}/user.js" "${targetPath}"
+      else
+        git --git-dir "${gitDir}" --work-tree "${leptonDir}" checkout HEAD -- "${targetPath}"
+      fi
+    fi
+    if [ "${customAppend}" == "true" ]; then
+      # Apply without duplication
+      if ! grep -Fq "$(echo $(cat "${customPath}"))" <(echo "$(echo $(cat "${targetPath}"))"); then
+        cat "${customPath}" >> "${targetPath}"
+      fi
+    fi
+  elif [ -n "${otherCustomPath}" ]; then
+    apply_custom_file "${profilePath}" "${targetPath}" "${otherCustomPath}"
+  fi
+}
+
+apply_custom_files() {
+  for profilePath in "${firefoxProfilePaths[@]}"; do
+    for customFile in "${customFiles[@]}"; do
+      local targetFile="${customFile//-overrides/}"
+      if [ "${customFile}" == "user-overrides.js" ]; then
+        local targetPath="${profilePath}/${targetFile}"
+        local customPath="${profilePath}/user-overrides.js"
+        local otherCustomPath="${profilePath}/chrome/user-overrides.js"
+        apply_custom_file "${profilePath}" "${targetPath}" "${customPath}" "${otherCustomPath}"
+      else
+        apply_custom_file "${profilePath}" "${profilePath}/chrome/${targetFile}" "${profilePath}/chrome/${customFile}"
+      fi
+    done
+  done
+
+  if [ "${customFileApplied}" == "true" ]; then
+    lepton_ok_message "End custom file applied"
+  fi
+}
+
 #== Install Helpers ============================================================
 chromeDuplicate=""
 check_chrome_exist() {
@@ -673,10 +806,16 @@ copy_lepton() {
 #== Each Install ===============================================================
 install_local() {
   copy_lepton "${currentDir}" "user.js"
+  copy_custom_files
+
+  apply_custom_files
 }
 
 install_release() {
   copy_lepton "chrome" "user.js"
+  copy_custom_files
+
+  apply_custom_files
 }
 
 install_network() {
@@ -685,9 +824,11 @@ install_network() {
 
   clone_lepton
   copy_lepton
+  copy_custom_files
 
   clean_lepton
   check_chrome_restore
+  apply_custom_files
 }
 
 install_profile() {
@@ -703,6 +844,22 @@ install_profile() {
 }
 
 #** Update *********************************************************************
+file_stash() {
+  local leptonDir=$1
+  local gitDir=$2
+  if [[ $(git --git-dir "${gitDir}" --work-tree "${leptonDir}" diff --stat) != '' ]]; then
+    git --git-dir "${gitDir}" --work-tree "${leptonDir}" stash
+  fi
+}
+file_restore() {
+  local leptonDir=$1
+  local gitDir=$2
+  local gitDirty=$3
+  if [ -n "${gitDirty}" ]; then
+    git --git-dir "${gitDir}" --work-tree "${leptonDir}" stash pop --quiet
+  fi
+}
+
 update_profile() {
   check_git
   for profileDir in "${firefoxProfileDirPaths[@]}"; do
@@ -714,10 +871,15 @@ update_profile() {
         local Branch=$(get_ini_value "${LEPTONINFOPATH}" "Branch" "${section}")
         local Path=$(  get_ini_value "${LEPTONINFOPATH}" "Path"   "${section}")
 
-        local LEPTONGITPATH="${Path}/chrome/.git"
+        local leptonDir="${Path}/chrome"
+        local gitDir="${leptonDir}/.git"
         if [ "${Type}" == "Git" ]; then
-          git --git-dir "${LEPTONGITPATH}" checkout "${Branch}"
-          git --git-dir "${LEPTONGITPATH}" pull --no-edit
+          local gitDirty=$(file_stash "${leptonDir}" "${gitDir}")
+
+          git --git-dir "${gitDir}" --work-tree "${leptonDir}" checkout "${Branch}"
+          git --git-dir "${gitDir}" --work-tree "${leptonDir}" pull --no-edit
+
+          file_restore "${leptonDir}" "${gitDir}" "${gitDirty}"
         elif [ "${Type}" == "Local" ] || [ "${Type}" == "Release" ]; then
           check_chrome_exist
           clone_lepton
@@ -728,20 +890,23 @@ update_profile() {
           if [ -z "${Branch}" ]; then
             Branch="${leptonBranch}"
           fi
-          git --git-dir "${LEPTONGITPATH}" checkout "${Branch}"
+          git --git-dir "${gitDir}" --work-tree "${leptonDir}" checkout "${Branch}"
 
           if [ "${Type}" == "Release" ]; then
             local Ver=$(git --git-dir "${LEPTONINFOFILE}" describe --tags --abbrev=0)
-            git --git-dir "${LEPTONGITPATH}" checkout "tags/${Ver}"
+            git --git-dir "${gitDir}" --work-tree "${leptonDir}" checkout "tags/${Ver}"
           fi
+
+          clean_lepton
+          check_chrome_restore
         else
           lepton_error_message "Unable to find update type, ${Type} at ${section}"
         fi
       done
     fi
   done
-  clean_lepton
-  check_chrome_restore
+
+  apply_custom_files
 }
 
 #** Main ***********************************************************************
@@ -772,6 +937,8 @@ install_lepton() {
   check_profile_ini
   update_profile_paths
   write_lepton_info
+
+  check_custom_files
 
   # Install Mode
   if [ "${updateMode}" == true ]; then

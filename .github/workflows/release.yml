@@ -4,8 +4,30 @@ on:
       - "v*" # push events to matching v*, i.e. v1.0, v20.15.10
 
 jobs:
+  sync-branches:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Merge master -> photon-style
+        uses: devmasx/merge-branch@1.4.0
+        with:
+          type: now
+          from_branch: master
+          target_branch: photon-style
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Merge master -> proton-style
+        uses: devmasx/merge-branch@1.4.0
+        with:
+          type: now
+          from_branch: master
+          target_branch: proton-style
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
   upload-files:
     runs-on: ubuntu-latest
+    needs: sync-branches
     strategy:
       matrix:
         include:
@@ -33,12 +55,20 @@ jobs:
 
       - name: Release Structure
         run: |
+          # Remove unnecessary files
+          rm -rf ./.git ./.github ./__tests__ ./docs ./src
+          rm -rf ./.gitattributes ./.gitignore ./.prettierignore ./.prettierrc.json
+          rm -rf ./package.json ./yarn.lock ./waterfox.sh
+          rm -rf ./CODE_OF_CONDUCT.md ./CONTRIBUTING.md ./README.org
+
+          # Move to ./chrome/
           mkdir -v chrome
 
           shopt -s extglob
-          mv -v !(chrome|user.js|install.sh) chrome/
+          mv -v !(chrome|CREDITS|LICENSE|user.js|install.sh|install.ps1) chrome/
 
-          zip -rv ${{ matrix.name }}.zip chrome user.js install.sh
+          # Zip files
+          zip -rv ${{ matrix.name }}.zip chrome CREDITS LICENSE user.js install.sh install.ps1
 
       - uses: softprops/action-gh-release@v1 # actions/create-release, actions/upload-release-asset is deprecated
         if: startsWith(github.ref, 'refs/tags/')

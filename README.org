@@ -18,10 +18,14 @@
 
 -----
 
-🔔🔔 A project redesign is in progress. #351
+🔔🔔 Did you set a custom, but not work?
 
-It's built with SCSS and all configured as options. \\
-It's in beta testing, and I'am looking forward to hearing from you.
+You should copy [[./user.js][ ~user.js~ ]] file before the theme works.
+
+The option system depends on user configuration, and nothing applies without settings. \\
+Also, real-time changes are difficult for [[./docs/Restrictions.md#supports][technical limitations]] and require restarts.
+
+Some settings [[https://github.com/black7375/Firefox-UI-Fix/wiki/Options#using-userjs][can be conflict]] and should be explicitly =false=.
 
 -----
 
@@ -33,8 +37,8 @@ It's in beta testing, and I'am looking forward to hearing from you.
   That's why this project was born, and Lepton to denote light theme layer.
 
   /Disclaimer:/ It works on *Firefox 89* and above!!
-  | *Wiki*      |                               |      | |
-  | [[https://github.com/black7375/Firefox-UI-Fix/wiki/Installation-Guide][Installation Guide]] | [[https://github.com/black7375/Firefox-UI-Fix/wiki/Screenshots][Screenshots]] | [[https://github.com/black7375/Firefox-UI-Fix/wiki/Compatibility-Issues-Solution][Compatibility Issues Solution]] | [[https://github.com/black7375/Firefox-UI-Fix/wiki/Tips][Tips]] |
+  | *Wiki*             |             |          |         |                               |      |                      |
+  | [[https://github.com/black7375/Firefox-UI-Fix/wiki/Installation-Guide][Installation Guide]] | [[https://github.com/black7375/Firefox-UI-Fix/wiki/Screenshots][Screenshots]] | [[https://github.com/black7375/Firefox-UI-Fix/wiki/Tutorial][Tutorial]] | [[https://github.com/black7375/Firefox-UI-Fix/wiki/Options][Options]] | [[https://github.com/black7375/Firefox-UI-Fix/wiki/Compatibility-Issues-Solution][Compatibility Issues Solution]] | [[https://github.com/black7375/Firefox-UI-Fix/wiki/Tips][Tips]] | [[https://github.com/black7375/Firefox-UI-Fix/wiki/Show-Off-Your-Config][Show Off Your Config]] |
 
   [[https://user-images.githubusercontent.com/25581533/119774062-20942280-beb1-11eb-80aa-c18dd52f18d7.png]]
 
@@ -62,6 +66,10 @@ It's in beta testing, and I'am looking forward to hearing from you.
     - Menu
     - Density
     - Others...
+  - *Tabbar Layouts*
+    - Tabs on Bottom
+    - One Liner
+    - Vertical Tab Support
   - *Tab Design*
     - General:
       - Connect with toolbar(Buttons like tabs)
@@ -73,7 +81,7 @@ It's in beta testing, and I'am looking forward to hearing from you.
     - Unselect:
       - Divide Line: React to hover like chrome
     - Unloaded:
-      - Dimmed: Looks like inactive 
+      - Dimmed: Looks like inactive
     - Clipped:
       - Clearer Text: Adjusted clipped gradation
       - Closed Button: Visible on hover
@@ -100,6 +108,7 @@ It's in beta testing, and I'am looking forward to hearing from you.
     - Overlap mode
   - *Others*
     - Animations
+    - Hidden & Auto Hide
     - Activate calculator at address bar
     - Mouse pointer for each context
 
@@ -114,7 +123,7 @@ It's in beta testing, and I'am looking forward to hearing from you.
    bash -c "$(curl -fsSL https://raw.githubusercontent.com/black7375/Firefox-UI-Fix/master/install.sh)"
    #+END_SRC
 
-   Windows users: Run with powershell
+Windows users: Run with powershell ([[https://github.com/black7375/Firefox-UI-Fix/wiki/Compatibility-Issues-Solution#windows-7-powershell-script-not-works][Does not work at Win7?]])
    #+BEGIN_SRC powershell
    Powershell -c "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iwr https://raw.githubusercontent.com/black7375/Firefox-UI-Fix/master/install.ps1 -useb | iex"
    #+END_SRC
