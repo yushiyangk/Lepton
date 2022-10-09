@@ -26,3 +26,9 @@
 .tabbrowser-tab .tab-close-button {
   visibility: collapse !important;
 }
+#tabbrowser-tabs[closebuttons="activetab"] .tabbrowser-tab:not([visuallyselected]) .tab-close-button {
+  visibility: collapse !important;
+}
+#tabbrowser-tabs[closebuttons="activetab"] .tabbrowser-tab:hover .tab-close-button {
+  visibility: collapse !important;
+}
