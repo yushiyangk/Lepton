@@ -16,11 +16,18 @@
 #tabbrowser-tabs {
   z-index: 1 !important;
 }
-#TabsToolbar {
-  overflow: hidden;   /* Prevent toolbar area over */
+@include NotOption("userChrome.tabbar.multi_row") {
+  #TabsToolbar:not([multibar]) {
+    overflow: clip; /* Prevent toolbar area over */
+  }
 }
 
 /* Pinned Tab - tabbrowser-arrowscrollbox overflowing */
 #tabbrowser-tabs[positionpinnedtabs] > #tabbrowser-arrowscrollbox > .tabbrowser-tab[pinned] {
   z-index: 0 !important;
+
+  .tab-stack {
+    /* Temporary solution for compatibility #513 */
+    overflow-y: clip;
+  }
 }

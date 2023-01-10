@@ -122,6 +122,25 @@
   @include _os_menuEmulate(17%, 80%);
 }
 
+/*= Windows 10 - Native Menu Active Color =====================================*/
+@include OS($win10) {
+  @include Win10_NativeMenu() {
+    menu[_moz-menuactive="true"],
+    menuitem[_moz-menuactive="true"] {
+      menupopup:is(#historyMenuPopup, #bookmarksMenuPopup) &,
+      menupopup:not([placespopup="true"]) & {
+        background-color: #91c9f7 !important; // color-mix(in srgb, -moz-menuhover 40%, transparent)
+        border-color: transparent !important;
+
+        &[disabled="true"] {
+          background-color: color-mix(in srgb, currentColor 9%, transparent) !important;
+          border-color: transparent !important;
+        }
+      }
+    }
+  }
+}
+
 @include OS($linux) {
   /*= Linux - Global Menubar Active Color ====================================*/
   #main-menubar > menu[open="true"],
@@ -190,6 +209,12 @@ $_os_linuxDefaultShadow: 0 0 4px rgba(128, 128, 142, 0.5);
         // Prevent #476 FF v105 above
         /* -moz-default-appearance: -moz-window-titlebar */
         appearance: none !important;
+      }
+      @include OS($win7, $win8) {
+        &[sizemode="maximized"] #titlebar {
+          // Only win7, win8 #480
+          padding-top: 8px; // Don't use margin-top for reserved fullscreen animation
+        }
       }
     }
     @include Option("userChrome.compatibility.os.windows_maximized") {

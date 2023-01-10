@@ -18,24 +18,26 @@ The overall structure of this project.
 root
 |- __tests__/: Mixin spec test
 |- icons/: Icons, illustrations
-|- css/: Build result of SCSS Files
+|- css/: Build result of SCSS Files (Don't modify directly!!)
 |- docs/: Development Documents
 |- src/: Source files
 |- src/leptonChrome.scss: Entry of SCSS for Browser UI
 |- src/leptonContent.scss: Entry of SCSS for Web pages
-|- .gitattributes: Exclude at `Download Zip`
+|- .gitattributes: Exclude at `Download ZIP`
 |- .github: Issue/PR Template, Github Actions
 |- .prettierignore: Exclude coding style
 |- .prettierrc.json: Coding style
-|- install.ps1: Install script write in powershell
-|- install.sh: Install script write in bash
+|- install.ps1: Install script written in powershell
+|- install.sh: Install script written in bash
 |- package.json: Build setup, package dependency
 |- LEPTON: Meta infos (branch, version)
 |- user.js: about:config settings
-|- userChrome.css: Entry of css for Browser UI (Don't modify directly!!)
-|- userContent.css: Entry of css for Web pages (Don't modify directly!!)
+|- userChrome.css: Entry of css for Browser UI (Modify only when customizing!!)
+|- userContent.css: Entry of css for Web pages (Modify only when customizing!!)
 |- yarn.lock: Auto generated dependency (Don't modify directly!!)
 ```
+
+If you first come, it's a good idea to see the [`/src/leptonChrome.scss`](/src/leptonChrome.scss) and [`leptonContent.scss`](/src/leptonContent.scss) files to understand the flow.
 
 ## Icon files
 
@@ -88,7 +90,7 @@ Path=<Full PATH>
 Inspired by [arkenfox](https://github.com/arkenfox/user.js/wiki/3.1-Overrides).  
 These files need to use a shell script and has some priorities.
 
-CSS override settings(`userChrome-overrides.css`, `userContent-overrides.css`) are relatively simple.
+CSS override settings (`userChrome-overrides.css`, `userContent-overrides.css`) are relatively simple.
 - `./<CSS_OVERRIDES>` (Will be copied `<FIREFOX_PROFILE>/chrome/`)
 - `<FIREFOX_PROFILE>/chrome/<CSS_OVERRIDES>`
 

@@ -3,6 +3,7 @@
 @use "utils/color_scheme" as *;
 @use "utils/accent_color" as *;
 @use "utils/native_menu" as *;
+@use "utils/moz_document" as *;
 @use "utils/proton_elements" as Proton;
 @use "sass:selector";
 
@@ -40,8 +41,10 @@
 }
 
 /** Menu - Icons Layout *******************************************************/
-@include Option("userChrome.icon.menu") {
-  @import "contents/context_menu";
+@include NotOption("userChrome.icon.disabled") {
+  @include Option("userChrome.icon.menu") {
+    @import "contents/context_menu";
+  }
 }
 
 /** Download Panel ************************************************************/
