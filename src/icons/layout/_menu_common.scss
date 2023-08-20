@@ -31,7 +31,7 @@ $_libraryMenuitem: "menupopup:is(#organizeButtonPopup, #maintenanceButtonPopup) 
 $_libraryMenu: "menupopup:is(#viewMenuPopup, #maintenanceButtonPopup) > #{$_iconMenu}";
 $_sendTabMenuPopup: "#context_sendTabToDevicePopupMenu, #context-sendpagetodevice-popup, #context-sendlinktodevice-popup";
 $_otherPopupMenuitem: "menupopup:is(#{$_sendTabMenuPopup}, #frame > menupopup) > menuitem";
-$_otherIconMenu: ".openintabs-menuitem, #blockedPopupDontShowMessage, #BMB_viewBookmarksToolbar";
+$_otherIconMenu: ".openintabs-menuitem, #blockedPopupDontShowMessage, #BMB_viewBookmarksToolbar, #sidebarMenu-popup:is(menupopup)";
 
 //-- Mixin ---------------------------------------------------------------------
 // Init Menu
