@@ -25,6 +25,9 @@ W: https://ethansup.net
 ----------
     Sponsors
 
+N: Alessandro Rubino
+W: https://github.com/Babbiorsetto
+
 N: Jani Haiko
 E: haiko.jani@gmail.com
 W: https://github.com/ojaha065
@@ -59,6 +62,9 @@ W: https://github.com/Ajith-stark
 
 N: akay
 W: https://github.com/akay
+
+N: Alex Kontos
+W: https://github.com/MrAlex94
 
 N: Andmagdo
 W: https://github.com/andmagdo
@@ -107,6 +113,13 @@ W: https://www.mamen.at
 
 N: MarNicGit
 W: https://github.com/MarNicGit
+
+N: menndouyukkuri
+E: menndoukusagari@gmail.com
+W: https://github.com/menndouyukkuri
+
+N: Mizuki
+W: https://github.com/MagicalDrizzle
 
 N: Oondanomala
 W: https://github.com/Oondanomala
@@ -186,6 +199,11 @@ W: https://github.com/MrOtherGuy/firefox-csshacks
 C: Copyright (c) 2018 MrOtherGuy
 L: MPL 2.0
 
+N: Firefox Custom CSS
+W: https://github.com/hakan-demirli/Firefox_Custom_CSS
+C: Copyright (c) 2022 hakan-demirli
+L: MIT
+
 N: Fluent UI System Icons
 W: https://github.com/microsoft/fluentui-system-icons
 C: Copyright (c) 2020 Microsoft Corporation
@@ -200,6 +218,11 @@ N: MaterialFox
 W: https://github.com/muckSponge/MaterialFox
 C: Copyright (c) 2018 muckSponge
 L: MIT
+
+N: Mozilla Foundation
+W: https://mozilla.org
+C: Copyright (c) 1998–2023 The Mozilla Foundation
+L: Creative Commons Attribution Share-Alike 3.0 Unported
 
 N: Multi-Account-Containers
 W: https://github.com/mozilla/multi-account-containers
