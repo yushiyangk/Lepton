@@ -58,13 +58,6 @@
   #allTabsMenu-allTabsView .subviewbutton.subviewbutton-nav:not([shortcut]) {
     padding-inline-end: var(--arrowpanel-menuitem-padding-inline) !important;
   }
-  /*= Icon Fill Color ==========================================================*/
-  :root:-moz-lwtheme {
-    /* Auto create --lwt-toolbarbutton-icon-fill-attention, fix for nightly default theme
-         Default Color: rgb(0,97,224) -> rgb(0, 120, 215) for more light
-       */
-    --lwt-toolbarbutton-icon-fill-attention: var(--button-primary-bgcolor, rgb(0, 120, 215));
-  }
   /*= First visible tab margin at maximized #332 ===============================*/
   :root[tabsintitlebar="true"][sizemode="maximized"] #TabsToolbar {
     margin-left: -1px;
@@ -3225,6 +3218,11 @@
       color: var(--in-content-button-text-color) !important; /* SelectedItemText */
       background-color: var(--in-content-button-background-active) !important; /* #C1D2EE; */
     }
+    @supports -moz-bool-pref("layout.css.osx-font-smoothing.enabled") {
+      #viewGroup > radio {
+        height: auto !important;
+      }
+    }
     #generalTab {
       --viewgroup-image: url(chrome://global/skin/icons/page-portrait.svg);
     }
@@ -4363,13 +4361,13 @@
   }
   @supports not -moz-bool-pref("userChrome.tab.photon_like_padding") {
     @supports -moz-bool-pref("userChrome.tab.lepton_like_padding") {
-      .tabbrowser-tab[pinned] {
+      #TabsToolbar:not([multibar]) .tabbrowser-tab[pinned] {
         padding-inline: 1px !important;
       }
-      .tabbrowser-tab:not([pinned]):not(:first-of-type) {
+      #TabsToolbar:not([multibar]) .tabbrowser-tab:not([pinned]):not(:first-of-type) {
         margin-inline: -1px !important;
       }
-      .tabbrowser-tab:not([pinned]):first-of-type {
+      #TabsToolbar:not([multibar]) .tabbrowser-tab:not([pinned]):first-of-type {
         margin-inline-end: -1px !important;
       }
     }
