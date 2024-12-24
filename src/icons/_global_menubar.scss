@@ -3,7 +3,7 @@
   --menuitem-image: url("../icons/mail-inbox-all.svg");
 }
 #edit-menu {
-  --menuitem-image: url("chrome://global/skin/icons/edit.svg");
+  --menuitem-image: url("../icons/edit-active.svg");
 }
 #view-menu {
   --menuitem-image: url("../icons/content-view.svg");
@@ -17,6 +17,22 @@
 #tools-menu {
   --menuitem-image: url("../icons/toolbox.svg");
 }
+#tabSharingMenu {
+  --menuitem-image: url("chrome://browser/skin/notification-icons/screen.svg");
+}
 #helpMenu {
   --menuitem-image: url("chrome://global/skin/icons/help.svg");
+}
+
+/*= Others ===================================================================*/
+#alltabs-button {
+  list-style-image: url("chrome://global/skin/icons/arrow-down.svg") !important;
+  > .toolbarbutton-badge-stack > .toolbarbutton-icon {
+    /* Original
+       width: 20px;
+       margin: -2px;
+     */
+    width: 16px !important;
+    margin: 0 !important;
+  }
 }

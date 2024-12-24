@@ -1,14 +1,20 @@
 /*= GTK - URL View url accent color ==========================================*/
 @include OS($linux) {
-  :root:not(:-moz-lwtheme) .urlbarView-url {
-    @include AccentColor {
-      --urlbar-popup-url-color: #{$accentColor};
+  @include not_lwtheme {
+    .urlbarView-url {
+      @include AccentColor {
+        --urlbar-popup-url-color: #{$accentColor};
+      }
     }
-  }
 
-  /* Nightly Compatibility */
-  :root:not(:-moz-lwtheme) #urlbar {
-    --toolbar-field-focus-color: var(--toolbar-field-color); /* Nightly: rgba(0, 0, 0, 1)  */
-    --toolbar-field-focus-background-color: var(--toolbar-field-background-color); /* Nightly: white */
+    // Rollback to color #864
+    --toolbar-field-background-color: Field !important;
+    --toolbar-field-color: FieldText !important;
+    --toolbar-field-border-color: ThreeDShadow !important;
+
+    #urlbar-background, #searchbar {
+      // Original: light-dark(rgba(0, 0, 0, .05), rgba(0, 0, 0, .3))
+      background-color: var(--toolbar-field-background-color) !important;
+    }
   }
 }

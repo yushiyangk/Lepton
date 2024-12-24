@@ -4,9 +4,14 @@
   margin-inline-start: var(--arrowpanel-menuicon-padding);
   @include BoxOrder(0, true);
 }
+#appMenu-addon-banners > .addon-banner-item > .toolbarbutton-icon {
+  display: inline-flex !important;
+}
 
+#appMenu-update-banner::before,
 #appMenu-proton-update-banner::before {
   content: url("../icons/whatsnew.svg");
+  margin-inline-end: 0px !important;
 }
 #appMenu-fxa-status2::before {
   /* Don't exist img tag */
@@ -200,6 +205,13 @@
 #PanelUI-fxa-menu-setup-sync-button {
   list-style-image: url("chrome://browser/skin/sync.svg");
 }
+@media (prefers-reduced-motion: reduce) {
+  #PanelUI-fxa-menu-syncnow-button[syncstatus="active"] > .toolbarbutton-icon,
+  #PanelUI-remotetabs-syncnow[syncstatus="active"] > .toolbarbutton-icon,
+  .syncNowBtn[syncstatus="active"] {
+    list-style-image: url("chrome://browser/skin/tabbrowser/hourglass.svg") !important;
+  }
+}
 
 #PanelUI-fxa-menu-connect-device-button {
   list-style-image: url("../icons/add-device.svg");
@@ -244,6 +256,9 @@
   margin: var(--panel-separator-margin);
   padding: 0;
 }
+#PanelUI-signedin-panel[hidden="true"] + #PanelUI-fxa-cta-menu #PanelUI-products-separator {
+  display: none; // #916
+}
 #PanelUI-fxa-menu > :first-child {
   @include BoxOrder(0);
 }
@@ -257,6 +272,28 @@
 .pageAction-sendToDevice-device.subviewbutton.sync-menuitem.sendtab-target:not([clientType]), /* Legacy */
   .sendToDevice-device.subviewbutton.sync-menuitem.sendtab-target:not([clientType]) {
   list-style-image: url("chrome://global/skin/icons/settings.svg");
+}
+
+.sendToDevice-device {
+  &[clientType="phone"] {
+    list-style-image: url("../icons/device-phone.svg") !important;
+  }
+
+  &[clientType="tablet"] {
+    list-style-image: url("../icons/device-tablet.svg") !important;
+  }
+
+  &[clientType="desktop"] {
+    list-style-image: url("../icons/device-desktop.svg") !important;
+  }
+
+  &[clientType="tv"] {
+    list-style-image: url("../icons/device-tv.svg") !important;
+  }
+
+  &[clientType="vr"] {
+    list-style-image: url("../icons/device-vr.svg") !important;
+  }
 }
 
 /*= Panel - Bookmark =========================================================*/
@@ -424,6 +461,12 @@ panelMenuBookmarkThisPage[starred] {
 #allTabsMenu-searchTabs {
   list-style-image: url("chrome://global/skin/icons/search-glass.svg");
 }
+#allTabsMenu-syncedTabs {
+  list-style-image: url("../icons/synced-tabs.svg");
+}
+#allTabsMenu-closeDuplicateTabs {
+  list-style-image: var(--uc-tab-close-duplicate-icon);
+}
 #allTabsMenu-containerTabsButton {
   list-style-image: url("../icons/container-openin-16.svg");
 }
@@ -482,6 +525,10 @@ panelMenuBookmarkThisPage[starred] {
   margin-inline-end: 1em;
 }
 
+#protections-popup-report-broken-site-button {
+  list-style-image: url("chrome://global/skin/icons/lightbulb.svg");
+}
+
 #protections-popup-settings-button > .protections-popup-settings-icon,
 #protections-popup-multiView .panel-subview-footer-button {
   list-style-image: url("chrome://global/skin/icons/settings.svg");
@@ -532,6 +579,10 @@ panelMenuBookmarkThisPage[starred] {
   @include _subviewMenuitem(url("../icons/synced-tabs.svg"));
 }
 
+#sidebar-switcher-genai-chat {
+  @include _subviewMenuitem(url("chrome://mozapps/skin/extensions/category-discover.svg"));
+}
+
 #sidebar-reverse-position {
   @include _subviewMenuitem(var(--uc-sidebar-icon-reverse));
 }
@@ -541,6 +592,27 @@ panelMenuBookmarkThisPage[starred] {
     url("chrome://global/skin/icons/close.svg"),
     "[data-l10n-id=\"sidebar-menu-close\"]"
   );
+}
+
+/*= chrome://browser/content/syncedtabs/sidebar.xhtml ========================*/
+.item.client[clientType=phone] > .item-title-container > .item-icon-container {
+  background-image: url("../icons/device-phone.svg") !important;
+}
+
+.item.client[clientType=tablet] > .item-title-container > .item-icon-container {
+  background-image: url("../icons/device-tablet.svg") !important;
+}
+
+.item.client[clientType=desktop] > .item-title-container > .item-icon-container {
+  background-image: url("../icons/device-desktop.svg") !important;
+}
+
+.item.client[clientType=tv] > .item-title-container > .item-icon-container {
+  background-image: url("../icons/device-tv.svg") !important;
+}
+
+.item.client[clientType=vr] > .item-title-container > .item-icon-container {
+  background-image: url("../icons/device-vr.svg") !important;
 }
 
 /*= unified-extensions-view ===================================================*/
