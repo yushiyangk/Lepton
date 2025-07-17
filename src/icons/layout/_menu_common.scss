@@ -12,7 +12,7 @@ $_checkMenu: ":not([type=\"checkbox\"][checked=\"true\"], [type=\"radio\"])";
 $_nestedPopup: "> menupopup:not(.in-menulist) >";
 $_nestedPopupIcon: ":not(menu, #ContentSelectDropdown) #{$_nestedPopup}";
 $_nestedPopupPadding: ":not(menu, #ContentSelectDropdown, #context-navigation) #{$_nestedPopup}";
-$_iconMenuPopup: "menupopup:is(#menu_FilePopup, #menu_EditPopup, #menu_viewPopup, #goPopup, #historyMenuPopup, #bookmarksMenuPopup, #menu_ToolsPopup, #windowPopup, #menu_HelpPopup, #usercssloader-menupopup)";
+$_iconMenuPopup: "menupopup:is(#menu_FilePopup, #menu_EditPopup, #menu_viewPopup, #goPopup, #historyMenuPopup, #bookmarksMenuPopup, #menu_ProfilesPopup, #menu_ToolsPopup, #windowPopup, #menu_HelpPopup, #usercssloader-menupopup)";
 
 $_nestedPopupIconMenus: selector.nest(
   $_nestedPopupIcon,
@@ -41,7 +41,7 @@ $_initialMenus: selector.append(
   $_checkMenu
 );
 $_initialMenus: $_initialMenus + "," +
-                selector.nest($_initialMenus, "> .menu-iconic-left > .menu-iconic-icon");
+                selector.nest($_initialMenus, "> .menu-iconic-left > .menu-iconic-icon, > .menu-icon");
 @mixin _initial_menus() {
   -moz-appearance: none !important; /* Linux: menulist */
 }
@@ -191,6 +191,12 @@ $_initialMenus: $_initialMenus + "," +
     // https://github.com/mozilla/gecko-dev/commit/e54707888510dec75db59a170b287d1db031505a
     // https://github.com/mozilla/gecko-dev/blob/e54707888510dec75db59a170b287d1db031505a/toolkit/themes/linux/global/menu.css#L103
     --context-menu-text-padding: 21px;
+  }
+  .menu-icon {
+    display: unset !important;
+  }
+  #main-menubar > menu > .menu-icon {
+    display: none !important;
   }
 }
 @mixin _layout_init_linux() {

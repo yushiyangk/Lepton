@@ -361,7 +361,12 @@
   }
   /** Activity Stream - Web Site Icon: full size ******************************/
   @supports -moz-bool-pref("userContent.newTab.full_icon") {
+    .top-site-outer {
+      width: 120px !important; /* v135: calc(var(--size-item-large) * 3); */
+    }
     .top-site-outer .tile {
+      width: 80px !important; /* v135: calc(var(--size-item-large) * 2); */
+      height: 80px !important; /* v135: calc(var(--size-item-large) * 2); */
       overflow: hidden;
     }
     .top-site-outer .icon-wrapper {
@@ -426,7 +431,8 @@
   @supports -moz-bool-pref("userContent.newTab.pocket_to_last") {
     .body-wrapper.on {
       display: flex;
-      flex-wrap: wrap;
+      flex-wrap: wrap !important;
+      flex-direction: row !important;
     }
     .body-wrapper.on > .discovery-stream.ds-layout {
       flex-basis: 100%;
@@ -875,6 +881,14 @@
           --menu-border-color: var(--dark-menu-border-color);
           --menu-icon-opacity: var(--dark-menu-icon-opacity);
         }
+      }
+    }
+    @supports -moz-bool-pref("userContent.page.proton_color.dark_blue_accent") or -moz-bool-pref("userContent.page.proton_color.system_accent") {
+      :root,
+      :host(.anonymous-content-host) {
+        --color-accent-primary: var(--in-content-primary-button-background) !important;
+        --color-accent-primary-hover: var(--in-content-primary-button-background-hover) !important;
+        --color-accent-primary-active: light-dark(var(--color-blue-70), var(--color-cyan-20));
       }
     }
     @supports -moz-bool-pref("userContent.page.proton_color.dark_blue_accent") {
@@ -2586,7 +2600,7 @@
         }
         #placesToolbar > toolbarbutton > .toolbarbutton-icon,
         #placesMenu > menu > image,
-        #placesMenu > menu > .menubar-text {
+        #placesMenu > menu > :is(.menubar-text, .menu-text) {
           -moz-context-properties: fill !important;
           fill: currentColor !important;
         }
@@ -2616,7 +2630,7 @@
           background-color: var(--organizer-selected-background) !important;
           color: var(--organizer-selected-color) !important;
         }
-        #placesMenu > menu > .menubar-text {
+        #placesMenu > menu > :is(.menubar-text, .menu-text) {
           margin-block: 0 !important; /* override menu.css */
           padding-inline-end: 4px !important;
         }
@@ -3307,7 +3321,9 @@
       menupopup menuitem:not([type="checkbox"][checked="true"], [type="radio"]),
       menupopup menu:not([type="checkbox"][checked="true"], [type="radio"]),
       menupopup menuitem:not([type="checkbox"][checked="true"], [type="radio"]) > .menu-iconic-left > .menu-iconic-icon,
-      menupopup menu:not([type="checkbox"][checked="true"], [type="radio"]) > .menu-iconic-left > .menu-iconic-icon {
+      menupopup menuitem:not([type="checkbox"][checked="true"], [type="radio"]) > .menu-icon,
+      menupopup menu:not([type="checkbox"][checked="true"], [type="radio"]) > .menu-iconic-left > .menu-iconic-icon,
+      menupopup menu:not([type="checkbox"][checked="true"], [type="radio"]) > .menu-icon {
         -moz-appearance: none !important; /* Linux: menulist */
       }
       menupopup:is(#placesContext, #placesColumnsContext, #downloadsContextMenu)
@@ -3559,6 +3575,12 @@
           --context-menu-background-padding-default: 6px;
           --context-menu-text-padding: 21px;
         }
+        .menu-icon {
+          display: unset !important;
+        }
+        #main-menubar > menu > .menu-icon {
+          display: none !important;
+        }
         /* Contextmenu Checkbox Unset */
         menupopup:is(#placesContext, #placesColumnsContext, #downloadsContextMenu) menuitem[type="checkbox"] {
           margin-inline: 0 !important;
@@ -3566,13 +3588,19 @@
         menupopup:is(#placesContext, #placesColumnsContext, #downloadsContextMenu)
           menuitem[type="checkbox"]
           > .menu-iconic-left
-          > .menu-iconic-icon {
+          > .menu-iconic-icon,
+        menupopup:is(#placesContext, #placesColumnsContext, #downloadsContextMenu)
+          menuitem[type="checkbox"]
+          > .menu-icon {
           margin-inline-end: 0 !important;
         }
         menupopup:is(#placesContext, #placesColumnsContext, #downloadsContextMenu)
           menuitem[type="checkbox"]:not([checked="true"])
           > .menu-iconic-left
-          > .menu-iconic-icon {
+          > .menu-iconic-icon,
+        menupopup:is(#placesContext, #placesColumnsContext, #downloadsContextMenu)
+          menuitem[type="checkbox"]:not([checked="true"])
+          > .menu-icon {
           border: none !important;
           background-color: unset !important;
         }
@@ -3793,7 +3821,7 @@
     }
     @-moz-document url-prefix("about:addons") {
       @supports -moz-bool-pref("userChrome.icon.context_menu") {
-        button[role="menuitem"] {
+        button:is([role="menuitem"], [role="menuitemcheckbox"]) {
           background-image: var(--icon, url("../icons/blank.svg")); /* Don't use !important. because of [checked] */
         }
         panel-item[action="check-for-updates"] {
